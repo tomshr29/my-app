@@ -8,7 +8,7 @@ export const Route = createFileRoute('/auth/login')({
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const { login, user, loading } = useAuth()
+  const { login } = useAuth()
   const form = useForm({
     defaultValues: {
       email: '',

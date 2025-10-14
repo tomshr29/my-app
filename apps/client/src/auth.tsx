@@ -1,11 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-
-interface User {
-  email: string
-}
+import { tuyau } from './tuyau'
 
 interface AuthContextType {
-  user: User | null
   loading: boolean
   login: (email: string, password: string) => Promise<void>
 }
@@ -13,7 +9,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -38,16 +34,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   const login = async (email: string, password: string) => {
-    const res = await fetch('http://localhost:3333/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
-    if (!res.ok) throw new Error('Login failed')
-
-    const data = await res.json()
+    const { data } = await tuyau.login.$post({ email, password })
+    console.log('Login response:', data)
     localStorage.setItem('token', data.token)
-    setUser(data.user)
+    setUser(data)
   }
 
   return (

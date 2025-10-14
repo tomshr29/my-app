@@ -1,38 +1,34 @@
+import { tuyau } from '@/tuyau'
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
-} from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+} from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/demo/list/animals")({
+export const Route = createFileRoute('/demo/list/animals')({
   component: RouteComponent,
-});
+})
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 function RouteComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Example />
     </QueryClientProvider>
-  );
+  )
 }
 
 function Example() {
-  const apiUrl = import.meta.env.VITE_API_URL;
-
   const { isPending, error, data } = useQuery({
-    queryKey: ["animals"],
-    queryFn: () =>
-      fetch(
-        `${apiUrl}/animals`
-      ).then((res) => res.json()),
-  });
+    queryKey: ['animals'],
+    queryFn: () => tuyau.animals.$get().unwrap(),
+  })
 
-  if (isPending) return "Loading...";
+  if (isPending) return 'Loading...'
 
-  if (error) return "An error has occurrend: " + error.message;
+  if (error) return 'An error has occurrend: ' + error.message
 
   if (!data || data.length === 0)
     return (
@@ -47,7 +43,7 @@ function Example() {
           </Link>
         </div>
       </div>
-    );
+    )
 
   return (
     <div>
@@ -73,19 +69,19 @@ function Example() {
               </p>
               <p className="mb-1 text-gray-600">
                 <span className="font-semibold">Âge:</span> {animal.age} an
-                {animal.age > 1 ? "s" : ""}
+                {animal.age > 1 ? 's' : ''}
               </p>
               <p
                 className={`text-sm font-semibold ${
-                  animal.adopted ? "text-green-600" : "text-red-600"
+                  animal.adopted ? 'text-green-600' : 'text-red-600'
                 }`}
               >
-                {animal.adopted ? "Adopté ✅" : "Non adopté ❌"}
+                {animal.adopted ? 'Adopté ✅' : 'Non adopté ❌'}
               </p>
             </div>
           </Link>
         ))}
       </div>
     </div>
-  );
+  )
 }

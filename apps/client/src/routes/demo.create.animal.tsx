@@ -1,49 +1,52 @@
-import { useForm } from "@tanstack/react-form";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { tuyau } from '@/tuyau'
+import { useForm } from '@tanstack/react-form'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/demo/create/animal")({
+export const Route = createFileRoute('/demo/create/animal')({
   component: RouteComponent,
-});
+})
+
+interface Animal {
+  name: string
+  species: string
+  age: number
+  adopted: boolean
+}
+
+const defaultAnimal: Animal = {
+  name: '',
+  species: '',
+  age: 0,
+  adopted: false,
+}
 
 function RouteComponent() {
-  const navigate = useNavigate();
-    const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate()
   const form = useForm({
-    defaultValues: {
-      name: "",
-      species: "",
-      age: 0,
-      adopted: false,
-    },
+    defaultValues: defaultAnimal,
     onSubmit: async ({ value }) => {
       try {
-        const res = await fetch(
-          `${apiUrl}/animals`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(value),
-          },
-        );
-        const data = await res.json();
-        console.log("Animal créé:", data);
-        form.reset();
-        navigate({ to: "/demo/list/animals" });
+        const data = await tuyau.animals.$post(value).unwrap()
+        navigate({
+          to: '/demo/show/animal/$animalId',
+          params: { animalId: data.id },
+          replace: true,
+        })
+        form.reset()
       } catch (err) {
-        console.error("Erreur:", err);
+        console.error('Erreur:', err)
       }
     },
-  });
+  })
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault();
-        form.handleSubmit();
+        e.preventDefault()
+        form.handleSubmit()
       }}
       className="mx-auto max-w-md space-y-4 p-4"
     >
-      {/* Nom */}
       <div>
         <label htmlFor="name" className="block font-semibold">
           Nom:
@@ -51,7 +54,7 @@ function RouteComponent() {
         <form.Field
           name="name"
           validators={{
-            onChange: ({ value }) => (!value ? "Required" : undefined),
+            onChange: ({ value }) => (!value ? 'Required' : undefined),
           }}
           children={(field) => (
             <input
@@ -64,8 +67,6 @@ function RouteComponent() {
           )}
         />
       </div>
-
-      {/* Espèce */}
       <div>
         <label htmlFor="species" className="block font-semibold">
           Espèce:
@@ -73,7 +74,7 @@ function RouteComponent() {
         <form.Field
           name="species"
           validators={{
-            onChange: ({ value }) => (!value ? "Required" : undefined),
+            onChange: ({ value }) => (!value ? 'Required' : undefined),
           }}
           children={(field) => (
             <input
@@ -86,8 +87,6 @@ function RouteComponent() {
           )}
         />
       </div>
-
-      {/* Âge */}
       <div>
         <label htmlFor="age" className="block font-semibold">
           Âge:
@@ -95,7 +94,7 @@ function RouteComponent() {
         <form.Field
           name="age"
           validators={{
-            onChange: ({ value }) => (value < 0 ? "Must be ≥ 0" : undefined),
+            onChange: ({ value }) => (value < 0 ? 'Must be ≥ 0' : undefined),
           }}
           children={(field) => (
             <input
@@ -109,8 +108,6 @@ function RouteComponent() {
           )}
         />
       </div>
-
-      {/* Adopté */}
       <div className="flex items-center space-x-2">
         <form.Field
           name="adopted"
@@ -129,7 +126,6 @@ function RouteComponent() {
           )}
         />
       </div>
-
       <button
         type="submit"
         className="rounded bg-blue-600 px-4 py-2 text-white"
@@ -137,5 +133,5 @@ function RouteComponent() {
         Créer
       </button>
     </form>
-  );
+  )
 }
