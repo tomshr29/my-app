@@ -20,7 +20,6 @@ FROM installer AS build
 COPY --from=deps /app/node_modules /app/node_modules
 WORKDIR /app/apps/server
 RUN node ace build
-RUN node ace migration:run --force
 
 # Production stage
 FROM base
