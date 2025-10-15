@@ -26,8 +26,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const { tuyau } = await import('./tuyau.ts')
-
 // Render the app
 const rootElement = document.getElementById('app')
 if (rootElement && !rootElement.innerHTML) {
