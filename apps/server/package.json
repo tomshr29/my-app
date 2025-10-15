@@ -5,7 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "exports": {
-    "./schema": "./.adonisjs/api.ts"
+    "./api": "./.adonisjs/index.ts"
   },
   "scripts": {
     "start": "node bin/server.js",
