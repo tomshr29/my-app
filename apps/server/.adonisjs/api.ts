@@ -23,25 +23,37 @@ type MeGetHead = {
   request: unknown
   response: MakeTuyauResponse<import('../app/controllers/auth_controller.ts').default['me'], false>
 }
-type AnimalsGetHead = {
+type PropertiesMineGetHead = {
   request: unknown
-  response: MakeTuyauResponse<import('../app/controllers/animals_controller.ts').default['list'], false>
+  response: MakeTuyauResponse<import('../app/controllers/properties_controller.ts').default['mine'], false>
 }
-type AnimalsIdGetHead = {
+type PropertiesGetHead = {
   request: unknown
-  response: MakeTuyauResponse<import('../app/controllers/animals_controller.ts').default['show'], false>
+  response: MakeTuyauResponse<import('../app/controllers/properties_controller.ts').default['list'], false>
 }
-type AnimalsPost = {
-  request: MakeTuyauRequest<InferInput<typeof import('../app/validators/animal.ts')['createAnimalValidator']>>
-  response: MakeTuyauResponse<import('../app/controllers/animals_controller.ts').default['create'], true>
-}
-type AnimalsIdPut = {
-  request: MakeTuyauRequest<InferInput<typeof import('../app/validators/animal.ts')['updateAnimalValidator']>>
-  response: MakeTuyauResponse<import('../app/controllers/animals_controller.ts').default['update'], true>
-}
-type AnimalsIdDelete = {
+type PropertiesIdGetHead = {
   request: unknown
-  response: MakeTuyauResponse<import('../app/controllers/animals_controller.ts').default['delete'], false>
+  response: MakeTuyauResponse<import('../app/controllers/properties_controller.ts').default['show'], false>
+}
+type PropertiesPost = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/validators/property.ts')['createPropertyValidator']>>
+  response: MakeTuyauResponse<import('../app/controllers/properties_controller.ts').default['create'], true>
+}
+type PropertiesIdPut = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/validators/property.ts')['updateAnimalValidator']>>
+  response: MakeTuyauResponse<import('../app/controllers/properties_controller.ts').default['update'], true>
+}
+type PropertiesIdDelete = {
+  request: unknown
+  response: MakeTuyauResponse<import('../app/controllers/properties_controller.ts').default['delete'], false>
+}
+type ProfileEditGetHead = {
+  request: unknown
+  response: MakeTuyauResponse<import('../app/controllers/profiles_controller.ts').default['edit'], false>
+}
+type ProfilesPut = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/validators/profile.ts')['profileUpdateValidator']>>
+  response: MakeTuyauResponse<import('../app/controllers/profiles_controller.ts').default['update'], true>
 }
 export interface ApiDefinition {
   'register': {
@@ -65,20 +77,39 @@ export interface ApiDefinition {
     '$get': MeGetHead;
     '$head': MeGetHead;
   };
-  'animals': {
+  'properties': {
+    'mine': {
+      '$url': {
+      };
+      '$get': PropertiesMineGetHead;
+      '$head': PropertiesMineGetHead;
+    };
     '$url': {
     };
-    '$get': AnimalsGetHead;
-    '$head': AnimalsGetHead;
+    '$get': PropertiesGetHead;
+    '$head': PropertiesGetHead;
     ':id': {
       '$url': {
       };
-      '$get': AnimalsIdGetHead;
-      '$head': AnimalsIdGetHead;
-      '$put': AnimalsIdPut;
-      '$delete': AnimalsIdDelete;
+      '$get': PropertiesIdGetHead;
+      '$head': PropertiesIdGetHead;
+      '$put': PropertiesIdPut;
+      '$delete': PropertiesIdDelete;
     };
-    '$post': AnimalsPost;
+    '$post': PropertiesPost;
+  };
+  'profile': {
+    'edit': {
+      '$url': {
+      };
+      '$get': ProfileEditGetHead;
+      '$head': ProfileEditGetHead;
+    };
+  };
+  'profiles': {
+    '$url': {
+    };
+    '$put': ProfilesPut;
   };
 }
 const routes = [

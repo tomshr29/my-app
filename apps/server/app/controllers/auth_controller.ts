@@ -10,12 +10,24 @@ export default class AuthController {
    * @responseBody 422 - { "errors": [{ "message": "The email field must be a valid email address.", "rule": "email", "field": "email" }] }
    * @responseBody 500 - { "message": "Internal server error" }
    */
-  async register({ request }: HttpContext) {
+  async register({ request, response }: HttpContext) {
     const data = await request.validateUsing(registerValidator)
-    const user = await User.create(data)
 
-    return User.accessTokens.create(user, ['*'], {
-      expiresIn: '60s',
+    const user = await User.create({
+      email: data.email,
+      password: data.password,
+    })
+
+    await user.related('profile').create({
+      fullName: data.fullName,
+    })
+
+    const token = await User.accessTokens.create(user)
+
+    return response.ok({
+      type: 'bearer',
+      token: token.value!.release(),
+      user: user,
     })
   }
 
@@ -27,12 +39,15 @@ export default class AuthController {
    * @responseBody 400 - { "message": "Invalid credentials" }
    * @responseBody 500 - { "message": "Internal server error" }
    */
-  async login({ request }: HttpContext) {
+  async login({ request, response }: HttpContext) {
     const { email, password } = await request.validateUsing(loginValidator)
     const user = await User.verifyCredentials(email, password)
+    const token = await User.accessTokens.create(user)
 
-    return User.accessTokens.create(user, ['*'], {
-      expiresIn: '60s',
+    return response.ok({
+      type: 'bearer',
+      token: token.value!.release(),
+      user: user,
     })
   }
 

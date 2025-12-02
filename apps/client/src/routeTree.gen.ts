@@ -9,17 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthRegisterRouteImport } from './routes/auth/register'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as DemoListAnimalsRouteImport } from './routes/demo.list.animals'
-import { Route as DemoCreateAnimalRouteImport } from './routes/demo.create.animal'
-import { Route as DemoShowAnimalAnimalIdRouteImport } from './routes/demo.show.animal.$animalId'
+import { Route as PropertiesIndexRouteImport } from './routes/properties.index'
+import { Route as PropertyPropertyIdRouteImport } from './routes/property.$propertyId'
+import { Route as PropertiesCreateRouteImport } from './routes/properties.create'
+import { Route as AuthTableRouteImport } from './routes/_auth.table'
+import { Route as AuthSavedRouteImport } from './routes/_auth.saved'
+import { Route as AuthMyAccountRouteImport } from './routes/_auth.my-account'
 
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -27,107 +39,140 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/auth/register',
-  path: '/auth/register',
+const PropertiesIndexRoute = PropertiesIndexRouteImport.update({
+  id: '/properties/',
+  path: '/properties/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/auth/login',
-  path: '/auth/login',
+const PropertyPropertyIdRoute = PropertyPropertyIdRouteImport.update({
+  id: '/property/$propertyId',
+  path: '/property/$propertyId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoListAnimalsRoute = DemoListAnimalsRouteImport.update({
-  id: '/demo/list/animals',
-  path: '/demo/list/animals',
+const PropertiesCreateRoute = PropertiesCreateRouteImport.update({
+  id: '/properties/create',
+  path: '/properties/create',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoCreateAnimalRoute = DemoCreateAnimalRouteImport.update({
-  id: '/demo/create/animal',
-  path: '/demo/create/animal',
-  getParentRoute: () => rootRouteImport,
+const AuthTableRoute = AuthTableRouteImport.update({
+  id: '/table',
+  path: '/table',
+  getParentRoute: () => AuthRoute,
 } as any)
-const DemoShowAnimalAnimalIdRoute = DemoShowAnimalAnimalIdRouteImport.update({
-  id: '/demo/show/animal/$animalId',
-  path: '/demo/show/animal/$animalId',
-  getParentRoute: () => rootRouteImport,
+const AuthSavedRoute = AuthSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthMyAccountRoute = AuthMyAccountRouteImport.update({
+  id: '/my-account',
+  path: '/my-account',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/demo/create/animal': typeof DemoCreateAnimalRoute
-  '/demo/list/animals': typeof DemoListAnimalsRoute
-  '/demo/show/animal/$animalId': typeof DemoShowAnimalAnimalIdRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/my-account': typeof AuthMyAccountRoute
+  '/saved': typeof AuthSavedRoute
+  '/table': typeof AuthTableRoute
+  '/properties/create': typeof PropertiesCreateRoute
+  '/property/$propertyId': typeof PropertyPropertyIdRoute
+  '/properties': typeof PropertiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/demo/create/animal': typeof DemoCreateAnimalRoute
-  '/demo/list/animals': typeof DemoListAnimalsRoute
-  '/demo/show/animal/$animalId': typeof DemoShowAnimalAnimalIdRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/my-account': typeof AuthMyAccountRoute
+  '/saved': typeof AuthSavedRoute
+  '/table': typeof AuthTableRoute
+  '/properties/create': typeof PropertiesCreateRoute
+  '/property/$propertyId': typeof PropertyPropertyIdRoute
+  '/properties': typeof PropertiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/demo/create/animal': typeof DemoCreateAnimalRoute
-  '/demo/list/animals': typeof DemoListAnimalsRoute
-  '/demo/show/animal/$animalId': typeof DemoShowAnimalAnimalIdRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/_auth/my-account': typeof AuthMyAccountRoute
+  '/_auth/saved': typeof AuthSavedRoute
+  '/_auth/table': typeof AuthTableRoute
+  '/properties/create': typeof PropertiesCreateRoute
+  '/property/$propertyId': typeof PropertyPropertyIdRoute
+  '/properties/': typeof PropertiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/dashboard'
-    | '/auth/login'
-    | '/auth/register'
-    | '/demo/create/animal'
-    | '/demo/list/animals'
-    | '/demo/show/animal/$animalId'
+    | '/login'
+    | '/register'
+    | '/my-account'
+    | '/saved'
+    | '/table'
+    | '/properties/create'
+    | '/property/$propertyId'
+    | '/properties'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/dashboard'
-    | '/auth/login'
-    | '/auth/register'
-    | '/demo/create/animal'
-    | '/demo/list/animals'
-    | '/demo/show/animal/$animalId'
+    | '/login'
+    | '/register'
+    | '/my-account'
+    | '/saved'
+    | '/table'
+    | '/properties/create'
+    | '/property/$propertyId'
+    | '/properties'
   id:
     | '__root__'
     | '/'
-    | '/dashboard'
-    | '/auth/login'
-    | '/auth/register'
-    | '/demo/create/animal'
-    | '/demo/list/animals'
-    | '/demo/show/animal/$animalId'
+    | '/_auth'
+    | '/login'
+    | '/register'
+    | '/_auth/my-account'
+    | '/_auth/saved'
+    | '/_auth/table'
+    | '/properties/create'
+    | '/property/$propertyId'
+    | '/properties/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
-  DemoCreateAnimalRoute: typeof DemoCreateAnimalRoute
-  DemoListAnimalsRoute: typeof DemoListAnimalsRoute
-  DemoShowAnimalAnimalIdRoute: typeof DemoShowAnimalAnimalIdRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
+  PropertiesCreateRoute: typeof PropertiesCreateRoute
+  PropertyPropertyIdRoute: typeof PropertyPropertyIdRoute
+  PropertiesIndexRoute: typeof PropertiesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -137,52 +182,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/auth/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
+    '/properties/': {
+      id: '/properties/'
+      path: '/properties'
+      fullPath: '/properties'
+      preLoaderRoute: typeof PropertiesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
+    '/property/$propertyId': {
+      id: '/property/$propertyId'
+      path: '/property/$propertyId'
+      fullPath: '/property/$propertyId'
+      preLoaderRoute: typeof PropertyPropertyIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/list/animals': {
-      id: '/demo/list/animals'
-      path: '/demo/list/animals'
-      fullPath: '/demo/list/animals'
-      preLoaderRoute: typeof DemoListAnimalsRouteImport
+    '/properties/create': {
+      id: '/properties/create'
+      path: '/properties/create'
+      fullPath: '/properties/create'
+      preLoaderRoute: typeof PropertiesCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/create/animal': {
-      id: '/demo/create/animal'
-      path: '/demo/create/animal'
-      fullPath: '/demo/create/animal'
-      preLoaderRoute: typeof DemoCreateAnimalRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_auth/table': {
+      id: '/_auth/table'
+      path: '/table'
+      fullPath: '/table'
+      preLoaderRoute: typeof AuthTableRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/demo/show/animal/$animalId': {
-      id: '/demo/show/animal/$animalId'
-      path: '/demo/show/animal/$animalId'
-      fullPath: '/demo/show/animal/$animalId'
-      preLoaderRoute: typeof DemoShowAnimalAnimalIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_auth/saved': {
+      id: '/_auth/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AuthSavedRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/my-account': {
+      id: '/_auth/my-account'
+      path: '/my-account'
+      fullPath: '/my-account'
+      preLoaderRoute: typeof AuthMyAccountRouteImport
+      parentRoute: typeof AuthRoute
     }
   }
 }
 
+interface AuthRouteChildren {
+  AuthMyAccountRoute: typeof AuthMyAccountRoute
+  AuthSavedRoute: typeof AuthSavedRoute
+  AuthTableRoute: typeof AuthTableRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthMyAccountRoute: AuthMyAccountRoute,
+  AuthSavedRoute: AuthSavedRoute,
+  AuthTableRoute: AuthTableRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
-  AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
-  DemoCreateAnimalRoute: DemoCreateAnimalRoute,
-  DemoListAnimalsRoute: DemoListAnimalsRoute,
-  DemoShowAnimalAnimalIdRoute: DemoShowAnimalAnimalIdRoute,
+  AuthRoute: AuthRouteWithChildren,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+  PropertiesCreateRoute: PropertiesCreateRoute,
+  PropertyPropertyIdRoute: PropertyPropertyIdRoute,
+  PropertiesIndexRoute: PropertiesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

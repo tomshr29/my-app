@@ -1,3 +1,4 @@
+import Header from '@/components/Header'
 import { tuyau } from '@/tuyau'
 import {
   QueryClient,
@@ -10,7 +11,7 @@ import {
   useRouter,
 } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/demo/show/animal/$animalId')({
+export const Route = createFileRoute('/property/$propertyId')({
   component: RouteComponent,
 })
 
@@ -25,12 +26,12 @@ function RouteComponent() {
 }
 
 function Example() {
-  const { animalId } = Route.useParams()
+  const { propertyId } = Route.useParams()
   const router = useRouter()
   const canGoBack = useCanGoBack()
   const { isPending, error, data } = useQuery({
-    queryKey: ['animal', animalId],
-    queryFn: () => tuyau.animals({ id: animalId }).$get().unwrap(),
+    queryKey: ['animal', propertyId],
+    queryFn: () => tuyau.properties({ id: propertyId }).$get().unwrap(),
   })
 
   if (isPending) return 'Loading...'
@@ -39,15 +40,18 @@ function Example() {
 
   return (
     <div>
-      <h1>{data.name}</h1>
-      <p>Espèce: {data.species}</p>
-      <p>
-        Âge: {data.age} an{data.age > 1 ? 's' : ''}
-      </p>
-      <p>{data.adopted ? 'Adopté' : 'Non adopté'}</p>
-      {canGoBack ? (
-        <button onClick={() => router.history.back()}>Go back</button>
-      ) : null}
+      <Header />
+      <div className="p-6 pt-24">
+        <strong>Title:</strong> {data.title}
+        <p>Espèce: {data.species}</p>
+        <p>
+          Âge: {data.age} an{data.age > 1 ? 's' : ''}
+        </p>
+        <p>{data.adopted ? 'Adopté' : 'Non adopté'}</p>
+        {canGoBack ? (
+          <button onClick={() => router.history.back()}>Go back</button>
+        ) : null}
+      </div>
     </div>
   )
 }

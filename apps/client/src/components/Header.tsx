@@ -1,21 +1,48 @@
+import { useAuth } from '@/auth'
 import { Link } from '@tanstack/react-router'
 
 export default function Header() {
+  const { user } = useAuth()
+
   return (
-    <header className="p-2 flex gap-2 bg-white text-black justify-between">
-      <nav className="flex flex-row">
-        <div className="px-2 font-bold">
-          <Link to="/">Home</Link>
-        </div>
+    <div className="fixed inset-x-0 top-0 z-10 border-b border-black/5">
+      <div className="flex h-14 items-center justify-between gap-8 px-10 bg-white">
+        {/* Logo / Brand */}
+        <Link to="/" className="text-xl font-bold text-black hover:underline">
+          ImmoSite
+        </Link>
 
-        <div className="px-2 font-bold">
-          <Link to="/demo/list/animals">Animal List</Link>
-        </div>
+        {/* Navigation */}
+        <nav className="hidden md:flex space-x-6 text-gray-700 font-medium">
+          <Link to="/properties" className="hover:text-black transition">
+            Propriétés
+          </Link>
+          <Link to="/" className="hover:text-black transition">
+            Agents
+          </Link>
+          <Link to="/" className="hover:text-black transition">
+            Contact
+          </Link>
+        </nav>
 
-        <div className="px-2 font-bold">
-          <Link to="/auth/register">Register</Link>
+        {/* User actions */}
+        <div>
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <Link to="/my-account" className="underline">
+                My Account Dashboard
+              </Link>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-gray-800 transition"
+            >
+              Se connecter
+            </Link>
+          )}
         </div>
-      </nav>
-    </header>
+      </div>
+    </div>
   )
 }

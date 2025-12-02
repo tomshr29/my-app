@@ -16,20 +16,23 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@my-app/server": "*",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.2.2",
     "@tanstack/react-form": "^1.0.0",
     "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-router": "^1.132.0",
     "@tanstack/react-router-devtools": "^1.132.0",
+    "@tanstack/react-table": "^8.21.3",
     "@tanstack/router-plugin": "^1.132.0",
     "@tuyau/client": "^0.2.10",
     "gh-pages": "^6.3.0",
+    "lucide-react": "^0.554.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.6.0",
     "tailwindcss": "^4.0.6",
-    "zod": "^3.24.2",
-    "@my-app/server": "*"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@tanstack/eslint-config": "^0.3.0",

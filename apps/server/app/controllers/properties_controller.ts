@@ -1,8 +1,8 @@
-import Animal from '#models/animal'
-import { createAnimalValidator, updateAnimalValidator } from '#validators/animal'
+import Property from '#models/property'
+import { createPropertyValidator, updateAnimalValidator } from '#validators/property'
 import type { HttpContext } from '@adonisjs/core/http'
 
-export default class AnimalsController {
+export default class PropertiesController {
   /**
    * @list
    * @summary List all animals
@@ -10,8 +10,8 @@ export default class AnimalsController {
    * @responseBody 500 - { "message": "Internal server error" }
    */
   public async list({ response }: HttpContext) {
-    const animals = await Animal.all()
-    return response.json(animals)
+    const properties = await Property.query().preload('user')
+    return response.json(properties)
   }
 
   /**
@@ -23,8 +23,8 @@ export default class AnimalsController {
    * @responseBody 500 - { "message": "Internal server error" }
    */
   public async show({ params, response }: HttpContext) {
-    const animal = await Animal.findOrFail(params.id)
-    return response.json(animal)
+    const property = await Property.findOrFail(params.id)
+    return response.json(property)
   }
 
   /**
@@ -35,10 +35,10 @@ export default class AnimalsController {
    * @responseBody 422 - { "errors": [{ "message": "The age field must be defined.", "rule": "required", "field": "age"}]}
    * @responseBody 500 - { "message": "Internal server error" }
    */
-  public async create({ request, response }: HttpContext) {
-    const payload = await request.validateUsing(createAnimalValidator)
-    const animal = await Animal.create(payload)
-    return response.status(201).json(animal)
+  public async create({ request, auth, response }: HttpContext) {
+    const payload = await request.validateUsing(createPropertyValidator)
+    const property = await Property.create({ ...payload, userId: auth.user?.id })
+    return response.status(201).json(property)
   }
 
   /**
@@ -71,5 +71,13 @@ export default class AnimalsController {
     const animal = await Animal.findOrFail(params.id)
     await animal.delete()
     return response.status(204).noContent()
+  }
+
+  public async mine({ auth, response }: HttpContext) {
+    if (!auth.user) {
+      return response.unauthorized({ message: 'User not logged in' })
+    }
+    const animals = await Property.query().where('user_id', auth.user.id)
+    return response.ok(animals)
   }
 }

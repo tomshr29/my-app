@@ -13,8 +13,9 @@ import swagger from '#config/swagger'
 import { middleware } from '#start/kernel'
 
 const HomeController = () => import('#controllers/home_controller')
-const AnimalsController = () => import('#controllers/animals_controller')
+const PropertyController = () => import('#controllers/properties_controller')
 const AuthController = () => import('#controllers/auth_controller')
+const ProfilesController = () => import('#controllers/profiles_controller')
 
 router.get('/swagger', async () => {
   return AutoSwagger.default.docs(router.toJSON(), swagger)
@@ -35,10 +36,14 @@ router.get('/me', [AuthController, 'me']).as('auth.me').use(middleware.auth())
 
 router
   .group(() => {
-    router.get('/', [AnimalsController, 'list'])
-    router.get('/:id', [AnimalsController, 'show'])
-    router.post('/', [AnimalsController, 'create'])
-    router.put('/:id', [AnimalsController, 'update'])
-    router.delete('/:id', [AnimalsController, 'delete'])
+    router.get('/mine', [PropertyController, 'mine']).use(middleware.auth())
+    router.get('/', [PropertyController, 'list'])
+    router.get('/:id', [PropertyController, 'show'])
+    router.post('/', [PropertyController, 'create']).use(middleware.auth())
+    router.put('/:id', [PropertyController, 'update'])
+    router.delete('/:id', [PropertyController, 'delete'])
   })
-  .prefix('/animals')
+  .prefix('/properties')
+
+router.get('/profile/edit', [ProfilesController, 'edit']).use(middleware.auth())
+router.put('/profiles', [ProfilesController, 'update']).use(middleware.auth())

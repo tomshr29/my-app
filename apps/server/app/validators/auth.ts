@@ -11,6 +11,7 @@ export const registerValidator = vine.compile(
         const match = await db.from('users').select('id').where('email', value).first()
         return !match
       }),
+    fullName: vine.string().trim().minLength(2),
     password: vine.string().minLength(8),
   })
 )
