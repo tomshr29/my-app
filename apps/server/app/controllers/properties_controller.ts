@@ -1,6 +1,8 @@
 import Property from '#models/property'
 import { createPropertyValidator, updateAnimalValidator } from '#validators/property'
+import { cuid } from '@adonisjs/core/helpers'
 import type { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
 
 export default class PropertiesController {
   /**
@@ -37,7 +39,18 @@ export default class PropertiesController {
    */
   public async create({ request, auth, response }: HttpContext) {
     const payload = await request.validateUsing(createPropertyValidator)
-    const property = await Property.create({ ...payload, userId: auth.user?.id })
+
+    const { image, ...data } = payload
+
+    await image.move(app.makePath('storage/uploads'), {
+      name: `${cuid()}.${image.extname}`,
+    })
+
+    const property = await Property.create({
+      ...data,
+      imageUrl: image.fileName!,
+      userId: auth.user?.id,
+    })
     return response.status(201).json(property)
   }
 
@@ -53,7 +66,7 @@ export default class PropertiesController {
    */
   public async update({ params, request, response }: HttpContext) {
     const payload = await request.validateUsing(updateAnimalValidator)
-    const animal = await Animal.findOrFail(params.id)
+    const animal = await Property.findOrFail(params.id)
     animal.merge(payload)
     await animal.save()
     return response.json(animal)
@@ -68,7 +81,7 @@ export default class PropertiesController {
    * @responseBody 500 - { "message": "Internal server error" }
    */
   public async delete({ params, response }: HttpContext) {
-    const animal = await Animal.findOrFail(params.id)
+    const animal = await Property.findOrFail(params.id)
     await animal.delete()
     return response.status(204).noContent()
   }

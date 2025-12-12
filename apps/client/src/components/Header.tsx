@@ -29,7 +29,7 @@ export default function Header() {
         <div>
           {user ? (
             <div className="flex items-center space-x-4">
-              <Link to="/my-account" className="underline">
+              <Link to="/dashboard" className="underline">
                 My Account Dashboard
               </Link>
             </div>

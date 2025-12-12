@@ -11,6 +11,8 @@ import router from '@adonisjs/core/services/router'
 import AutoSwagger from 'adonis-autoswagger'
 import swagger from '#config/swagger'
 import { middleware } from '#start/kernel'
+import { normalize, sep } from 'node:path'
+import app from '@adonisjs/core/services/app'
 
 const HomeController = () => import('#controllers/home_controller')
 const PropertyController = () => import('#controllers/properties_controller')
@@ -47,3 +49,23 @@ router
 
 router.get('/profile/edit', [ProfilesController, 'edit']).use(middleware.auth())
 router.put('/profiles', [ProfilesController, 'update']).use(middleware.auth())
+
+const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
+
+router.get('/uploads/*', ({ request, response }) => {
+  const filePath = request.param('*').join(sep)
+  const normalizedPath = normalize(filePath)
+
+  if (PATH_TRAVERSAL_REGEX.test(normalizedPath)) {
+    return response.badRequest('Malformed path')
+  }
+
+  const absolutePath = app.makePath('storage/uploads', normalizedPath)
+  return response.download(absolutePath)
+})
+
+const MessagesController = () => import('#controllers/messages_controller')
+
+router.get('/messages', [MessagesController, 'index']).use(middleware.auth())
+router.get('/messages/:userId', [MessagesController, 'show']).use(middleware.auth())
+router.post('/messages', [MessagesController, 'store']).use(middleware.auth())

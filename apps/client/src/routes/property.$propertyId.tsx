@@ -47,6 +47,7 @@ function Example() {
         <p>
           Âge: {data.age} an{data.age > 1 ? 's' : ''}
         </p>
+        <img src={`${import.meta.env.VITE_API_URL}/uploads/${data.imageUrl}`} />
         <p>{data.adopted ? 'Adopté' : 'Non adopté'}</p>
         {canGoBack ? (
           <button onClick={() => router.history.back()}>Go back</button>

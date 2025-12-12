@@ -1,11 +1,15 @@
 import * as React from 'react'
-import { sleep } from './utils'
 import { tuyau } from './tuyau'
+import { sleep } from './utils'
+
+interface Profile {
+  fullName: string
+}
 
 interface User {
   id: string
-  fullName: string
   email: string
+  profile?: Profile
 }
 
 export interface AuthContext {

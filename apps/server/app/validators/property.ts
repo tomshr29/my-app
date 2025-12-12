@@ -8,6 +8,10 @@ export const createPropertyValidator = vine.compile(
     surface: vine.number().min(1),
     city: vine.string().minLength(2).maxLength(255),
     available: vine.boolean().optional(),
+    image: vine.file({
+      size: '2mb',
+      extnames: ['jpg', 'png', 'pdf'],
+    }),
   })
 )
 

@@ -16,9 +16,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PropertiesIndexRouteImport } from './routes/properties.index'
 import { Route as PropertyPropertyIdRouteImport } from './routes/property.$propertyId'
 import { Route as PropertiesCreateRouteImport } from './routes/properties.create'
-import { Route as AuthTableRouteImport } from './routes/_auth.table'
-import { Route as AuthSavedRouteImport } from './routes/_auth.saved'
 import { Route as AuthMyAccountRouteImport } from './routes/_auth.my-account'
+import { Route as AuthDashboardRouteRouteImport } from './routes/_auth/dashboard.route'
+import { Route as AuthDashboardIndexRouteImport } from './routes/_auth/dashboard.index'
+import { Route as AuthDashboardSettingsRouteImport } from './routes/_auth/dashboard.settings'
+import { Route as AuthDashboardExpensiveRouteImport } from './routes/_auth/dashboard.expensive'
+import { Route as AuthDashboardInvoicesRouteRouteImport } from './routes/_auth/dashboard.invoices.route'
+import { Route as AuthDashboardInvoicesIndexRouteImport } from './routes/_auth/dashboard.invoices.index'
+import { Route as AuthDashboardInvoicesInvoiceIdRouteImport } from './routes/_auth/dashboard.invoices.$invoiceId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -54,43 +59,79 @@ const PropertiesCreateRoute = PropertiesCreateRouteImport.update({
   path: '/properties/create',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthTableRoute = AuthTableRouteImport.update({
-  id: '/table',
-  path: '/table',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthSavedRoute = AuthSavedRouteImport.update({
-  id: '/saved',
-  path: '/saved',
-  getParentRoute: () => AuthRoute,
-} as any)
 const AuthMyAccountRoute = AuthMyAccountRouteImport.update({
   id: '/my-account',
   path: '/my-account',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthDashboardRouteRoute = AuthDashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthDashboardIndexRoute = AuthDashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthDashboardRouteRoute,
+} as any)
+const AuthDashboardSettingsRoute = AuthDashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthDashboardRouteRoute,
+} as any)
+const AuthDashboardExpensiveRoute = AuthDashboardExpensiveRouteImport.update({
+  id: '/expensive',
+  path: '/expensive',
+  getParentRoute: () => AuthDashboardRouteRoute,
+} as any)
+const AuthDashboardInvoicesRouteRoute =
+  AuthDashboardInvoicesRouteRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => AuthDashboardRouteRoute,
+  } as any)
+const AuthDashboardInvoicesIndexRoute =
+  AuthDashboardInvoicesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthDashboardInvoicesRouteRoute,
+  } as any)
+const AuthDashboardInvoicesInvoiceIdRoute =
+  AuthDashboardInvoicesInvoiceIdRouteImport.update({
+    id: '/$invoiceId',
+    path: '/$invoiceId',
+    getParentRoute: () => AuthDashboardInvoicesRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/dashboard': typeof AuthDashboardRouteRouteWithChildren
   '/my-account': typeof AuthMyAccountRoute
-  '/saved': typeof AuthSavedRoute
-  '/table': typeof AuthTableRoute
   '/properties/create': typeof PropertiesCreateRoute
   '/property/$propertyId': typeof PropertyPropertyIdRoute
   '/properties': typeof PropertiesIndexRoute
+  '/dashboard/invoices': typeof AuthDashboardInvoicesRouteRouteWithChildren
+  '/dashboard/expensive': typeof AuthDashboardExpensiveRoute
+  '/dashboard/settings': typeof AuthDashboardSettingsRoute
+  '/dashboard/': typeof AuthDashboardIndexRoute
+  '/dashboard/invoices/$invoiceId': typeof AuthDashboardInvoicesInvoiceIdRoute
+  '/dashboard/invoices/': typeof AuthDashboardInvoicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/my-account': typeof AuthMyAccountRoute
-  '/saved': typeof AuthSavedRoute
-  '/table': typeof AuthTableRoute
   '/properties/create': typeof PropertiesCreateRoute
   '/property/$propertyId': typeof PropertyPropertyIdRoute
   '/properties': typeof PropertiesIndexRoute
+  '/dashboard/expensive': typeof AuthDashboardExpensiveRoute
+  '/dashboard/settings': typeof AuthDashboardSettingsRoute
+  '/dashboard': typeof AuthDashboardIndexRoute
+  '/dashboard/invoices/$invoiceId': typeof AuthDashboardInvoicesInvoiceIdRoute
+  '/dashboard/invoices': typeof AuthDashboardInvoicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,12 +139,17 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_auth/dashboard': typeof AuthDashboardRouteRouteWithChildren
   '/_auth/my-account': typeof AuthMyAccountRoute
-  '/_auth/saved': typeof AuthSavedRoute
-  '/_auth/table': typeof AuthTableRoute
   '/properties/create': typeof PropertiesCreateRoute
   '/property/$propertyId': typeof PropertyPropertyIdRoute
   '/properties/': typeof PropertiesIndexRoute
+  '/_auth/dashboard/invoices': typeof AuthDashboardInvoicesRouteRouteWithChildren
+  '/_auth/dashboard/expensive': typeof AuthDashboardExpensiveRoute
+  '/_auth/dashboard/settings': typeof AuthDashboardSettingsRoute
+  '/_auth/dashboard/': typeof AuthDashboardIndexRoute
+  '/_auth/dashboard/invoices/$invoiceId': typeof AuthDashboardInvoicesInvoiceIdRoute
+  '/_auth/dashboard/invoices/': typeof AuthDashboardInvoicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,35 +157,48 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/dashboard'
     | '/my-account'
-    | '/saved'
-    | '/table'
     | '/properties/create'
     | '/property/$propertyId'
     | '/properties'
+    | '/dashboard/invoices'
+    | '/dashboard/expensive'
+    | '/dashboard/settings'
+    | '/dashboard/'
+    | '/dashboard/invoices/$invoiceId'
+    | '/dashboard/invoices/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
     | '/my-account'
-    | '/saved'
-    | '/table'
     | '/properties/create'
     | '/property/$propertyId'
     | '/properties'
+    | '/dashboard/expensive'
+    | '/dashboard/settings'
+    | '/dashboard'
+    | '/dashboard/invoices/$invoiceId'
+    | '/dashboard/invoices'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/login'
     | '/register'
+    | '/_auth/dashboard'
     | '/_auth/my-account'
-    | '/_auth/saved'
-    | '/_auth/table'
     | '/properties/create'
     | '/property/$propertyId'
     | '/properties/'
+    | '/_auth/dashboard/invoices'
+    | '/_auth/dashboard/expensive'
+    | '/_auth/dashboard/settings'
+    | '/_auth/dashboard/'
+    | '/_auth/dashboard/invoices/$invoiceId'
+    | '/_auth/dashboard/invoices/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -203,20 +262,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropertiesCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/table': {
-      id: '/_auth/table'
-      path: '/table'
-      fullPath: '/table'
-      preLoaderRoute: typeof AuthTableRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/saved': {
-      id: '/_auth/saved'
-      path: '/saved'
-      fullPath: '/saved'
-      preLoaderRoute: typeof AuthSavedRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/_auth/my-account': {
       id: '/_auth/my-account'
       path: '/my-account'
@@ -224,19 +269,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthMyAccountRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthDashboardRouteRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/dashboard/': {
+      id: '/_auth/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthDashboardIndexRouteImport
+      parentRoute: typeof AuthDashboardRouteRoute
+    }
+    '/_auth/dashboard/settings': {
+      id: '/_auth/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof AuthDashboardSettingsRouteImport
+      parentRoute: typeof AuthDashboardRouteRoute
+    }
+    '/_auth/dashboard/expensive': {
+      id: '/_auth/dashboard/expensive'
+      path: '/expensive'
+      fullPath: '/dashboard/expensive'
+      preLoaderRoute: typeof AuthDashboardExpensiveRouteImport
+      parentRoute: typeof AuthDashboardRouteRoute
+    }
+    '/_auth/dashboard/invoices': {
+      id: '/_auth/dashboard/invoices'
+      path: '/invoices'
+      fullPath: '/dashboard/invoices'
+      preLoaderRoute: typeof AuthDashboardInvoicesRouteRouteImport
+      parentRoute: typeof AuthDashboardRouteRoute
+    }
+    '/_auth/dashboard/invoices/': {
+      id: '/_auth/dashboard/invoices/'
+      path: '/'
+      fullPath: '/dashboard/invoices/'
+      preLoaderRoute: typeof AuthDashboardInvoicesIndexRouteImport
+      parentRoute: typeof AuthDashboardInvoicesRouteRoute
+    }
+    '/_auth/dashboard/invoices/$invoiceId': {
+      id: '/_auth/dashboard/invoices/$invoiceId'
+      path: '/$invoiceId'
+      fullPath: '/dashboard/invoices/$invoiceId'
+      preLoaderRoute: typeof AuthDashboardInvoicesInvoiceIdRouteImport
+      parentRoute: typeof AuthDashboardInvoicesRouteRoute
+    }
   }
 }
 
+interface AuthDashboardInvoicesRouteRouteChildren {
+  AuthDashboardInvoicesInvoiceIdRoute: typeof AuthDashboardInvoicesInvoiceIdRoute
+  AuthDashboardInvoicesIndexRoute: typeof AuthDashboardInvoicesIndexRoute
+}
+
+const AuthDashboardInvoicesRouteRouteChildren: AuthDashboardInvoicesRouteRouteChildren =
+  {
+    AuthDashboardInvoicesInvoiceIdRoute: AuthDashboardInvoicesInvoiceIdRoute,
+    AuthDashboardInvoicesIndexRoute: AuthDashboardInvoicesIndexRoute,
+  }
+
+const AuthDashboardInvoicesRouteRouteWithChildren =
+  AuthDashboardInvoicesRouteRoute._addFileChildren(
+    AuthDashboardInvoicesRouteRouteChildren,
+  )
+
+interface AuthDashboardRouteRouteChildren {
+  AuthDashboardInvoicesRouteRoute: typeof AuthDashboardInvoicesRouteRouteWithChildren
+  AuthDashboardExpensiveRoute: typeof AuthDashboardExpensiveRoute
+  AuthDashboardSettingsRoute: typeof AuthDashboardSettingsRoute
+  AuthDashboardIndexRoute: typeof AuthDashboardIndexRoute
+}
+
+const AuthDashboardRouteRouteChildren: AuthDashboardRouteRouteChildren = {
+  AuthDashboardInvoicesRouteRoute: AuthDashboardInvoicesRouteRouteWithChildren,
+  AuthDashboardExpensiveRoute: AuthDashboardExpensiveRoute,
+  AuthDashboardSettingsRoute: AuthDashboardSettingsRoute,
+  AuthDashboardIndexRoute: AuthDashboardIndexRoute,
+}
+
+const AuthDashboardRouteRouteWithChildren =
+  AuthDashboardRouteRoute._addFileChildren(AuthDashboardRouteRouteChildren)
+
 interface AuthRouteChildren {
+  AuthDashboardRouteRoute: typeof AuthDashboardRouteRouteWithChildren
   AuthMyAccountRoute: typeof AuthMyAccountRoute
-  AuthSavedRoute: typeof AuthSavedRoute
-  AuthTableRoute: typeof AuthTableRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthDashboardRouteRoute: AuthDashboardRouteRouteWithChildren,
   AuthMyAccountRoute: AuthMyAccountRoute,
-  AuthSavedRoute: AuthSavedRoute,
-  AuthTableRoute: AuthTableRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

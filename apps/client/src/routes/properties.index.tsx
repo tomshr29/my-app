@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import Header from '@/components/Header'
 import { tuyau } from '@/tuyau'
-import { useQuery } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/properties/')({
   component: Example,
@@ -42,36 +42,36 @@ function Example() {
       <Header />
       <div className="p-6 pt-24">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {data.map((property: any) => (
-            <Link
-              key={property.id}
-              to="/property/$propertyId"
-              params={{ propertyId: property.id }}
-              className="block rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-500"
-            >
-              <div>
-                <strong>Title:</strong> {property.title}
-              </div>
-              <div>
-                <strong>Description:</strong> {property.description || '-'}
-              </div>
-              <div>
-                <strong>Price:</strong> {property.price} €
-              </div>
-              <div>
-                <strong>Surface:</strong> {property.surface} m²
-              </div>
-              <div>
-                <strong>City:</strong> {property.city}
-              </div>
-              {property.user && (
+          {data.map((property: any) => {
+            const imageUrl = `${import.meta.env.VITE_API_URL}/uploads/${property.imageUrl}`
+            return (
+              <Link
+                key={property.id}
+                to="/property/$propertyId"
+                params={{ propertyId: property.id }}
+                className="block rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-500"
+              >
+                <h2 className="text-xl font-semibold">{property.title}</h2>
+                <p>{property.description}</p>
                 <div>
-                  <strong>User:</strong> {property.user.fullName} (
-                  {property.user.email})
+                  <strong>Price:</strong> {property.price} €
                 </div>
-              )}
-            </Link>
-          ))}
+                <div>
+                  <strong>Surface:</strong> {property.surface} m²
+                </div>
+                <div>
+                  <strong>City:</strong> {property.city}
+                </div>
+                <img src={imageUrl} />
+                {property.user && (
+                  <div>
+                    <strong>User:</strong> {property.user.fullName} (
+                    {property.user.email})
+                  </div>
+                )}
+              </Link>
+            )
+          })}
         </div>
       </div>
     </div>

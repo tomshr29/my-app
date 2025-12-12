@@ -71,6 +71,11 @@ export default class AuthController {
    */
   async me({ auth }: HttpContext) {
     await auth.check()
+
+    // Charge la relation profile ET attends la résolution
+    await auth.user!.load('profile')
+
+    // Ensuite retourne l'utilisateur complet (avec profile chargé)
     return { user: auth.user }
   }
 }

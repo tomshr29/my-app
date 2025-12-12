@@ -1,8 +1,8 @@
+import { TanstackDevtools } from '@tanstack/react-devtools'
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanstackDevtools } from '@tanstack/react-devtools'
-import type { AuthContext } from '../auth'
 import { Toaster } from 'react-hot-toast'
+import type { AuthContext } from '../auth'
 
 interface MyRouterContext {
   auth: AuthContext

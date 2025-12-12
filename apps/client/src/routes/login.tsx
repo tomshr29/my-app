@@ -1,12 +1,12 @@
-import { useAuth } from '@/auth'
-import { sleep } from '@/utils'
 import { useForm } from '@tanstack/react-form'
 import {
-  createFileRoute,
   Link,
+  createFileRoute,
   redirect,
   useRouter,
 } from '@tanstack/react-router'
+import { useAuth } from '@/auth'
+import { sleep } from '@/utils'
 
 export const Route = createFileRoute('/login')({
   beforeLoad: ({ context }) => {
@@ -30,7 +30,7 @@ function LoginComponent() {
       await auth.login(value.email, value.password)
       await router.invalidate()
       await sleep(1)
-      await navigate({ to: '/my-account' })
+      await navigate({ to: '/dashboard' })
     },
   })
 

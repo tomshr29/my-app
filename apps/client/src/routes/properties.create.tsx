@@ -23,6 +23,7 @@ interface Property {
   surface: number
   city: string
   available: boolean
+  image?: File | null
 }
 
 const defaultProperty: Property = {
@@ -32,6 +33,7 @@ const defaultProperty: Property = {
   surface: 0,
   city: '',
   available: true,
+  image: null,
 }
 
 function RouteComponent() {
@@ -49,8 +51,8 @@ function RouteComponent() {
           })
           .unwrap()
         navigate({
-          to: '/animals/$animalId',
-          params: { animalId: data.id },
+          to: '/property/$propertyId',
+          params: { propertyId: data.id },
           replace: true,
         })
         form.reset()
@@ -68,6 +70,27 @@ function RouteComponent() {
       }}
       className="mx-auto max-w-md space-y-4 p-4"
     >
+      <div>
+        <form.Field
+          name="image"
+          children={(field) => (
+            <>
+              <label htmlFor={field.name}>Image:</label>
+              <input
+                id={field.name}
+                name={field.name}
+                type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null
+                  field.handleChange(file)
+                }}
+              />
+            </>
+          )}
+        />
+      </div>
+
       <div>
         <form.Field
           name="title"

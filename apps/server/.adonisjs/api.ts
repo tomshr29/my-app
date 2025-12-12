@@ -55,6 +55,18 @@ type ProfilesPut = {
   request: MakeTuyauRequest<InferInput<typeof import('../app/validators/profile.ts')['profileUpdateValidator']>>
   response: MakeTuyauResponse<import('../app/controllers/profiles_controller.ts').default['update'], true>
 }
+type MessagesGetHead = {
+  request: unknown
+  response: MakeTuyauResponse<import('../app/controllers/messages_controller.ts').default['index'], false>
+}
+type MessagesIdGetHead = {
+  request: unknown
+  response: MakeTuyauResponse<import('../app/controllers/messages_controller.ts').default['show'], false>
+}
+type MessagesPost = {
+  request: unknown
+  response: MakeTuyauResponse<import('../app/controllers/messages_controller.ts').default['store'], false>
+}
 export interface ApiDefinition {
   'register': {
     '$url': {
@@ -110,6 +122,19 @@ export interface ApiDefinition {
     '$url': {
     };
     '$put': ProfilesPut;
+  };
+  'messages': {
+    '$url': {
+    };
+    '$get': MessagesGetHead;
+    '$head': MessagesGetHead;
+    ':userId': {
+      '$url': {
+      };
+      '$get': MessagesIdGetHead;
+      '$head': MessagesIdGetHead;
+    };
+    '$post': MessagesPost;
   };
 }
 const routes = [
