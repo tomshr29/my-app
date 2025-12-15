@@ -1,5 +1,5 @@
+import { Link, createFileRoute } from '@tanstack/react-router'
 import Header from '@/components/Header'
-import { createFileRoute, Link } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: HomeComponent,
@@ -9,31 +9,31 @@ function HomeComponent() {
   const { auth } = Route.useRouteContext()
 
   return (
-    <div>
+    <main>
       <Header />
-      <div className="flex items-start px-10 pt-24">
-        <div className="max-w-5xl">
-          <h1 className="text-8xl font-bold mb-6">
-            Bienvenue sur notre plateforme immobilière &
-          </h1>
-          <p className="text-lg leading-relaxed text-gray-700">
-            Trouvez la maison ou l'appartement de vos rêves grâce à notre
-            sélection exclusive de biens immobiliers. Que vous cherchiez à
-            acheter, louer ou investir, nous vous accompagnons à chaque étape
-            pour réaliser votre projet.
-          </p>
-          <Link
-            to="/properties"
-            className="inline-block mt-6 px-8 py-4 text-lg bg-black text-white rounded-2xl font-semibold hover:bg-gray-800 transition shadow-lg"
-          >
-            Get Started
-          </Link>
-          <p className="mt-4 text-sm text-gray-500">
-            Explorez nos offres et commencez votre nouvelle aventure immobilière
-            dès aujourd'hui.
-          </p>
+      <div className="relative overflow-hidden px-4">
+        <div className="max-w-6xl mx-auto relative py-20">
+          <div className="flex flex-col gap-5">
+            <h1 className="text-4xl sm:text-6xl">
+              Musical widget for streamers!
+            </h1>
+            <p className="text-xl font-thin text-stone-400">
+              Compatible with{''}{' '}
+              <span className="font-normal">AppleMusic</span>,
+              <span className="font-normal">Spotify</span>
+              {''} on Windows and MacOS.
+            </p>
+            <div className="flex gap-5 py-20">
+              <Link
+                to="/properties"
+                className="flex items-center gap-2 justify-center bg-stone-200 transition-colors duration-400 ease-in-out text-stone-950 rounded py-3 px-2 text-center text-sm"
+              >
+                Get started
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

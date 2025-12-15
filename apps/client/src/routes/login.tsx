@@ -44,7 +44,7 @@ function LoginComponent() {
         className="grid w-full max-w-md grid-cols-1 gap-8"
       >
         <h1 className="text-2xl/8 font-semibold text-white sm:text-xl/8">
-          Log in to your account
+          Log in to your accountdededede
         </h1>
         <div>
           <form.Field
@@ -104,7 +104,7 @@ function LoginComponent() {
             <button
               type="submit"
               disabled={!canSubmit}
-              className="flex w-full justify-center rounded-md bg-zinc-500 px-3 py-1.5 text-base/6 sm:text-sm/6 font-semibold text-white hover:bg-zinc-400"
+              className="flex w-ful justify-center rounded-md bg-zinc-500 px-3 py-1.5 text-base/6 sm:text-sm/6 font-semibold text-white hover:bg-zinc-400"
             >
               {isSubmitting ? 'Logging in…' : 'Login'}
             </button>

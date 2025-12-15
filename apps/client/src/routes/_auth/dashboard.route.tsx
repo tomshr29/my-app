@@ -1,12 +1,14 @@
-import { useAuth } from '@/auth'
 import {
   Link,
   Outlet,
   createFileRoute,
   linkOptions,
+  useRouter,
 } from '@tanstack/react-router'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowLeftToLine, ChevronDown, ChevronUp, LogOut } from 'lucide-react'
 import { DynamicIcon } from 'lucide-react/dynamic'
+import { useAuth } from '@/auth'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 
 export const Route = createFileRoute('/_auth/dashboard')({
   component: DashboardComponent,
@@ -25,6 +27,11 @@ const options = [
     icon: 'file-text',
   }),
   linkOptions({
+    to: '/dashboard/messages',
+    label: 'Messages',
+    icon: 'mail',
+  }),
+  linkOptions({
     to: '/dashboard/expensive',
     label: 'Expensive',
     icon: 'dollar-sign',
@@ -38,7 +45,7 @@ const options = [
 
 function DashboardComponent() {
   return (
-    <div className="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100">
+    <div className="relative isolate flex min-h-svh w-full bg-stone-900 max-lg:flex-col lg:bg-zinc-950">
       {/* Sidebar */}
       <div className="fixed inset-y-0 left-0 w-64 max-lg:hidden">
         <div className="flex h-full min-h-0 flex-col">
@@ -51,7 +58,7 @@ function DashboardComponent() {
 
       {/* Dashboard */}
       <div className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pt-2 lg:pr-2 lg:pl-64">
-        <div className="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-xs lg:ring-1 lg:ring-zinc-950/5">
+        <div className="grow p-6 lg:rounded-lg lg:bg-stone-900 lg:p-2 lg:shadow-xs lg:ring-1 lg:ring-zinc-800/75">
           <Outlet />
         </div>
       </div>
@@ -61,9 +68,22 @@ function DashboardComponent() {
 
 const AccountToggle = () => {
   const { user } = useAuth()
+  const auth = useAuth()
+  const router = useRouter()
+  const navigate = Route.useNavigate()
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to logout?')) {
+      auth.logout().then(() => {
+        router.invalidate().finally(() => {
+          navigate({ to: '/' })
+        })
+      })
+    }
+  }
+
   return (
-    <div className="flex flex-col border-b border-zinc-950/5 p-4">
-      <button className="flex p-0.5 hover:bg-stone-200 rounded transition-colors relative gap-2 w-full items-center">
+    <Menu as="div" className="flex flex-col border-b border-zinc-950/5 p-4">
+      <MenuButton className="flex p-0.5 hover:bg-stone-800 rounded transition-colors relative gap-2 w-full items-center data-open:bg-red-700">
         <img
           src="https://api.dicebear.com/9.x/notionists/svg"
           alt="avatar"
@@ -84,8 +104,26 @@ const AccountToggle = () => {
           size={12}
           className="absolute right-2 top-1/2 translate-y-[calc(-50%-4px)]"
         />
-      </button>
-    </div>
+      </MenuButton>
+      <MenuItems
+        transition
+        anchor="bottom start"
+        className="min-w-80 lg:min-w-64 rounded-xl border border-white/5 bg-stone-900 p-4 focus:outline-none [--anchor-gap:--spacing(1)]"
+      >
+        <MenuItem as="div" className="flex items-center gap-4 px-3 py-1.5">
+          <ArrowLeftToLine size={20} />
+          <Link className="block  text-stone-200" to="/properties">
+            Go home
+          </Link>
+        </MenuItem>
+        <MenuItem as="div" className="flex items-center gap-4 px-3 py-1.5">
+          <LogOut size={20} />
+          <button onClick={handleLogout} className="block  text-stone-200">
+            Sign out
+          </button>
+        </MenuItem>
+      </MenuItems>
+    </Menu>
   )
 }
 
@@ -98,23 +136,23 @@ const RouteSelect = () => {
             {...option}
             key={option.to}
             activeProps={() => ({
-              className: 'bg-white text-stone-950 shadow',
+              className: 'bg-stone-800 text-stone-200 shadow',
             })}
             inactiveProps={() => ({
               className:
                 'hover:bg-stone-200 bg-transparent text-stone-500 shadow-none',
             })}
-            className="group flex items-center justify-start gap-2 w-full rounded px-2 py-1.5 text-sm transition-[box-shadow_background-color_color]"
+            className="group flex items-center justify-start gap-2 w-full rounded px-2 py-1.5 transition-[box-shadow_background-color_color]"
           >
             {({ isActive }) => {
               return (
                 <>
                   <DynamicIcon
-                    size={12}
+                    size={20}
                     name={option.icon}
-                    className={isActive ? 'text-blue-500' : 'text-stone-500'}
+                    className={isActive ? 'text-blue-500' : ''}
                   />
-                  <span>{option.label}</span>
+                  <span className="text-base font-medium">{option.label}</span>
                 </>
               )
             }}

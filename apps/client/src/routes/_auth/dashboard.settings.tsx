@@ -53,31 +53,31 @@ function RouteComponent() {
     >
       <div className="border-b border-gray-900/10 pb-12 dark:border-white/10 flex flex-col md:flex-row gap-20">
         <div className="max-w-sm">
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-gray-100 mb-1">
-              Personal Information
+          <div className="mb-8 p-4">
+            <h1 className="text-2xl font-medium text-stone-100 mb-1">
+              Account Settings
             </h1>
             <p className="text-gray-400 text-sm">
               Change your identity informations
             </p>
-          </div>
 
-          <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isSubmitting]}
-            children={([canSubmit, isSubmitting]) => (
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                className={`rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs transition ${
-                  canSubmit
-                    ? 'bg-indigo-600 hover:bg-indigo-500'
-                    : 'bg-gray-400 cursor-not-allowed'
-                }`}
-              >
-                {isSubmitting ? '...' : 'Submit'}
-              </button>
-            )}
-          />
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+              children={([canSubmit, isSubmitting]) => (
+                <button
+                  type="submit"
+                  disabled={!canSubmit}
+                  className={`rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs transition ${
+                    canSubmit
+                      ? 'bg-indigo-600 hover:bg-indigo-500'
+                      : 'bg-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  {isSubmitting ? '...' : 'Submit'}
+                </button>
+              )}
+            />
+          </div>
         </div>
 
         <div className="flex-1 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -88,9 +88,9 @@ function RouteComponent() {
                 <div>
                   <label
                     htmlFor={field.name}
-                    className="block text-sm/6 font-medium text-gray-900 dark:text-white"
+                    className="block text-sm/6 font-medium text-gray-900"
                   >
-                    FullName
+                    Profile name
                   </label>
                   <div className="mt-2">
                     <input
@@ -114,7 +114,7 @@ function RouteComponent() {
                 <div>
                   <label
                     htmlFor={field.name}
-                    className="block text-sm/6 font-medium text-gray-900 dark:text-white"
+                    className="block text-sm/6 font-medium text-gray-900"
                   >
                     Email
                   </label>

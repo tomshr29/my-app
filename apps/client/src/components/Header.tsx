@@ -1,12 +1,12 @@
-import { useAuth } from '@/auth'
 import { Link } from '@tanstack/react-router'
+import { useAuth } from '@/auth'
 
 export default function Header() {
   const { user } = useAuth()
 
   return (
-    <div className="fixed inset-x-0 top-0 z-10 border-b border-black/5">
-      <div className="flex h-14 items-center justify-between gap-8 px-10 bg-white">
+    <div className="border-b border-stone-50/10 px-4">
+      <div className="h-20 flex items-center justify-between relative max-w-6xl mx-auto">
         {/* Logo / Brand */}
         <Link to="/" className="text-xl font-bold text-black hover:underline">
           ImmoSite
