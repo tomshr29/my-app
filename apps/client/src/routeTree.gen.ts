@@ -25,6 +25,7 @@ import { Route as AuthDashboardMessagesRouteRouteImport } from './routes/_auth/d
 import { Route as AuthDashboardInvoicesRouteRouteImport } from './routes/_auth/dashboard.invoices.route'
 import { Route as AuthDashboardMessagesIndexRouteImport } from './routes/_auth/dashboard.messages.index'
 import { Route as AuthDashboardInvoicesIndexRouteImport } from './routes/_auth/dashboard.invoices.index'
+import { Route as AuthDashboardMessagesConversationIdRouteImport } from './routes/_auth/dashboard.messages.$conversationId'
 import { Route as AuthDashboardInvoicesInvoiceIdRouteImport } from './routes/_auth/dashboard.invoices.$invoiceId'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -110,6 +111,12 @@ const AuthDashboardInvoicesIndexRoute =
     path: '/',
     getParentRoute: () => AuthDashboardInvoicesRouteRoute,
   } as any)
+const AuthDashboardMessagesConversationIdRoute =
+  AuthDashboardMessagesConversationIdRouteImport.update({
+    id: '/$conversationId',
+    path: '/$conversationId',
+    getParentRoute: () => AuthDashboardMessagesRouteRoute,
+  } as any)
 const AuthDashboardInvoicesInvoiceIdRoute =
   AuthDashboardInvoicesInvoiceIdRouteImport.update({
     id: '/$invoiceId',
@@ -132,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof AuthDashboardSettingsRoute
   '/dashboard/': typeof AuthDashboardIndexRoute
   '/dashboard/invoices/$invoiceId': typeof AuthDashboardInvoicesInvoiceIdRoute
+  '/dashboard/messages/$conversationId': typeof AuthDashboardMessagesConversationIdRoute
   '/dashboard/invoices/': typeof AuthDashboardInvoicesIndexRoute
   '/dashboard/messages/': typeof AuthDashboardMessagesIndexRoute
 }
@@ -147,6 +155,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings': typeof AuthDashboardSettingsRoute
   '/dashboard': typeof AuthDashboardIndexRoute
   '/dashboard/invoices/$invoiceId': typeof AuthDashboardInvoicesInvoiceIdRoute
+  '/dashboard/messages/$conversationId': typeof AuthDashboardMessagesConversationIdRoute
   '/dashboard/invoices': typeof AuthDashboardInvoicesIndexRoute
   '/dashboard/messages': typeof AuthDashboardMessagesIndexRoute
 }
@@ -167,6 +176,7 @@ export interface FileRoutesById {
   '/_auth/dashboard/settings': typeof AuthDashboardSettingsRoute
   '/_auth/dashboard/': typeof AuthDashboardIndexRoute
   '/_auth/dashboard/invoices/$invoiceId': typeof AuthDashboardInvoicesInvoiceIdRoute
+  '/_auth/dashboard/messages/$conversationId': typeof AuthDashboardMessagesConversationIdRoute
   '/_auth/dashboard/invoices/': typeof AuthDashboardInvoicesIndexRoute
   '/_auth/dashboard/messages/': typeof AuthDashboardMessagesIndexRoute
 }
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/'
     | '/dashboard/invoices/$invoiceId'
+    | '/dashboard/messages/$conversationId'
     | '/dashboard/invoices/'
     | '/dashboard/messages/'
   fileRoutesByTo: FileRoutesByTo
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard'
     | '/dashboard/invoices/$invoiceId'
+    | '/dashboard/messages/$conversationId'
     | '/dashboard/invoices'
     | '/dashboard/messages'
   id:
@@ -221,6 +233,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard/settings'
     | '/_auth/dashboard/'
     | '/_auth/dashboard/invoices/$invoiceId'
+    | '/_auth/dashboard/messages/$conversationId'
     | '/_auth/dashboard/invoices/'
     | '/_auth/dashboard/messages/'
   fileRoutesById: FileRoutesById
@@ -349,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardInvoicesIndexRouteImport
       parentRoute: typeof AuthDashboardInvoicesRouteRoute
     }
+    '/_auth/dashboard/messages/$conversationId': {
+      id: '/_auth/dashboard/messages/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/dashboard/messages/$conversationId'
+      preLoaderRoute: typeof AuthDashboardMessagesConversationIdRouteImport
+      parentRoute: typeof AuthDashboardMessagesRouteRoute
+    }
     '/_auth/dashboard/invoices/$invoiceId': {
       id: '/_auth/dashboard/invoices/$invoiceId'
       path: '/$invoiceId'
@@ -376,11 +396,14 @@ const AuthDashboardInvoicesRouteRouteWithChildren =
   )
 
 interface AuthDashboardMessagesRouteRouteChildren {
+  AuthDashboardMessagesConversationIdRoute: typeof AuthDashboardMessagesConversationIdRoute
   AuthDashboardMessagesIndexRoute: typeof AuthDashboardMessagesIndexRoute
 }
 
 const AuthDashboardMessagesRouteRouteChildren: AuthDashboardMessagesRouteRouteChildren =
   {
+    AuthDashboardMessagesConversationIdRoute:
+      AuthDashboardMessagesConversationIdRoute,
     AuthDashboardMessagesIndexRoute: AuthDashboardMessagesIndexRoute,
   }
 

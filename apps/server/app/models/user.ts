@@ -5,8 +5,8 @@ import { BaseModel, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import type { HasMany, HasOne } from '@adonisjs/lucid/types/relations'
-import Property from './property.js'
-import Profile from './profile.js'
+import Property from '#models/property'
+import Profile from '#models/profile'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],

@@ -69,3 +69,8 @@ const MessagesController = () => import('#controllers/messages_controller')
 router.get('/messages', [MessagesController, 'index']).use(middleware.auth())
 router.get('/messages/:userId', [MessagesController, 'show']).use(middleware.auth())
 router.post('/messages', [MessagesController, 'store']).use(middleware.auth())
+
+const ConversationsController = () => import('#controllers/conversations_controller')
+
+router.get('/conversations', [ConversationsController, 'index']).use(middleware.auth())
+router.get('/conversations/:id', [ConversationsController, 'show']).use(middleware.auth())
